@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega Final - Tatiana Totoli & V4 Silva Anchieta & Co</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#1D0002',
+                            secondary: '#CD9444',
+                            tertiary: '#FFFFFF',
+                            dark: '#0a0a0a',
+                            darker: '#050505',
+                            footer: '#E50914'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Smooth reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Button hover effects */
+        .btn-gold {
+            background: linear-gradient(135deg, #CD9444 0%, #b58239 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(205, 148, 68, 0.3);
+            background: linear-gradient(135deg, #b58239 0%, #a07332 100%);
+        }
+
+        /* Backgrounds for sections */
+        .bg-pattern-1 { background-color: #050505; }
+        .bg-pattern-2 { background-color: #120001; }
+        .bg-pattern-3 { background-color: #0a0a0a; }
+        .bg-pattern-4 { background-color: #1a0002; }
+        
+        /* Hero Canvas */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* --- GANTT CHART STYLES EXTRACTED FROM PROVIDED CODE --- */
+        :root {
+            --brand-primary: #1D0002; 
+            --primary: #CD9444;       
+            --header-bg: #1D0002;     
+            --text-main: #1D0002;     
+            --text-light: #546e7a;    
+            --bg-page: #f0f2f5;       
+            --bg-container: #ffffff;  
+            --border-color: #cfd8dc;  
+            --cell-bg: #ffffff;       
+            --topic-bg: #f8f9fa;      
+        }
+
+        .gantt-container {
+            width: 100%;
+            background: var(--bg-container);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(205, 148, 68, 0.15);
+            border: 1px solid rgba(205, 148, 68, 0.2);
+            color: var(--text-main);
+        }
+
+        .gantt-chart {
+            display: grid;
+            grid-template-columns: 280px 1fr 1fr 1fr 1fr 1fr 1fr;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .gantt-header {
+            background-color: var(--header-bg);
+            color: #ffffff;
+            padding: 15px;
+            font-weight: bold;
+            text-align: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .gantt-header:last-child { border-right: none; }
+        .gantt-header.topic { text-align: left; }
+
+        .gantt-cell {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            min-height: 60px;
+            background-color: var(--cell-bg);
+        }
+        
+        .gantt-cell:nth-child(7n) { border-right: none; }
+
+        .topic-cell {
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: var(--topic-bg);
+            font-size: 0.95rem;
+        }
+
+        .gantt-bar {
+            background-color: var(--primary);
+            height: 36px;
+            width: 100%;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(205, 148, 68, 0.25);
+        }
+
+        .gantt-bar:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(205, 148, 68, 0.4);
+            background-color: #b58239;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(29, 0, 2, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: var(--bg-container);
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            border: 1px solid var(--primary);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover { color: var(--primary); }
+
+        .modal-title {
+            color: var(--brand-primary);
+            margin-bottom: 15px;
+            padding-right: 30px;
+            text-align: left;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            padding-bottom: 5px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .modal-desc {
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 1.05rem;
+            margin-top: 10px;
+        }
+
+        .modal-meta {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .gantt-chart {
+                grid-template-columns: 150px 1fr 1fr 1fr 1fr 1fr 1fr;
+            }
+            .gantt-header { font-size: 0.75rem; padding: 10px 5px; }
+            .topic-cell { font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-secondary selection:text-white">
+
+    <header class="fixed top-0 w-full z-50 bg-brand-primary border-b border-brand-secondary/30 shadow-xl transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Left spacer for balancing center -->
+            <div class="w-1/3 hidden md:block"></div>
+            
+            <!-- Center: Client Logo -->
+            <div class="w-full md:w-1/3 flex justify-center">
+                <img src="https://tatianatotoli.netlify.app/tatiana-logotipo-claro.png" alt="Tatiana Totoli Logo" class="h-12 object-contain">
+            </div>
+            
+            <!-- Right: Agency Logo -->
+            <div class="w-full md:w-1/3 flex justify-end">
+                <img src="https://brand.v4company.com/_next/image?url=%2Fimages%2Flogos%2Fsimbolo-company.webp&w=256&q=75" alt="V4 Silva Anchieta & Co" class="h-8 object-contain" style="filter: brightness(0) invert(1);">
+            </div>
+        </div>
+    </header>
+
+    <section class="relative w-full h-screen flex items-center justify-center overflow-hidden bg-brand-primary" style="margin-top: 0;">
+        <!-- Canvas Background -->
+        <canvas id="hero-canvas"></canvas>
+        
+        <!-- Overlay Gradient for readability -->
+        <div class="absolute inset-0 bg-gradient-to-b from-brand-primary/80 via-transparent to-brand-primary/90 z-0"></div>
+
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto reveal">
+            <span class="inline-block py-1 px-3 rounded-full border border-brand-secondary text-brand-secondary text-sm font-semibold tracking-widest uppercase mb-6 bg-brand-primary/50 backdrop-blur-sm">
+                Entrega Final
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">
+                Diagnóstico e Planejamento <br>
+                <span class="text-brand-secondary">de Marketing e Vendas</span>
+            </h1>
+            <div class="mt-10">
+                <a href="#norte" class="animate-bounce inline-flex items-center justify-center w-12 h-12 rounded-full border-2 border-brand-secondary text-brand-secondary hover:bg-brand-secondary hover:text-white transition-all">
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-pattern-1 border-t border-brand-secondary/10" id="etapas">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">ETAPAS DE ESTUDO DESSE PROJETO</h2>
+                <div class="h-1 w-24 bg-brand-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="relative max-w-5xl mx-auto reveal">
+                <!-- Timeline Line -->
+                <div class="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-800 -translate-y-1/2 z-0"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+                    <!-- Week 1 -->
+                    <div class="bg-brand-dark border border-gray-800 p-6 rounded-xl text-center shadow-lg relative group transition-all hover:-translate-y-2">
+                        <div class="w-12 h-12 bg-gray-800 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-pattern-1 text-xl font-bold">1</div>
+                        <h3 class="text-brand-secondary font-bold mb-2">Semana 1</h3>
+                        <p class="text-sm text-gray-300">Kick-Off e Oferta Principal</p>
+                    </div>
+
+                    <!-- Week 2 -->
+                    <div class="bg-brand-dark border border-gray-800 p-6 rounded-xl text-center shadow-lg relative group transition-all hover:-translate-y-2">
+                        <div class="w-12 h-12 bg-gray-800 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-pattern-1 text-xl font-bold">2</div>
+                        <h3 class="text-brand-secondary font-bold mb-2">Semana 2</h3>
+                        <p class="text-sm text-gray-300">Pesquisa de Mercado & Posicionamento</p>
+                    </div>
+
+                    <!-- Week 3 -->
+                    <div class="bg-brand-dark border border-gray-800 p-6 rounded-xl text-center shadow-lg relative group transition-all hover:-translate-y-2">
+                        <div class="w-12 h-12 bg-gray-800 text-gray-400 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-pattern-1 text-xl font-bold">3</div>
+                        <h3 class="text-brand-secondary font-bold mb-2">Semana 3</h3>
+                        <p class="text-sm text-gray-300">Diagnóstico de Marketing / Comercial</p>
+                    </div>
+
+                    <!-- Week 4 (HIGHLIGHTED) -->
+                    <div class="bg-gradient-to-b from-[#2A1618] to-brand-primary border-2 border-brand-secondary p-6 rounded-xl text-center shadow-[0_0_20px_rgba(205,148,68,0.3)] relative group transform scale-105">
+                        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-secondary text-brand-primary text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                            Foco Principal
+                        </div>
+                        <div class="w-14 h-14 bg-brand-secondary text-brand-primary rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-brand-primary text-2xl font-black shadow-lg">4</div>
+                        <h3 class="text-brand-secondary font-bold mb-2 text-lg">Semana 4</h3>
+                        <p class="text-sm text-white font-semibold">Plano de Marketing e Vendas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="norte" class="py-24 bg-pattern-2">
+        <div class="max-w-5xl mx-auto px-6 reveal">
+            <div class="bg-brand-primary border border-brand-secondary/40 rounded-3xl p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
+                <!-- Decorative Icon -->
+                <i class="fa-solid fa-compass absolute -top-10 -right-10 text-9xl text-brand-secondary opacity-10"></i>
+                <i class="fa-solid fa-crosshairs absolute -bottom-10 -left-10 text-9xl text-brand-secondary opacity-10"></i>
+                
+                <h2 class="text-xl md:text-2xl text-brand-secondary font-bold tracking-widest uppercase mb-4">NOSSO NORTE:</h2>
+                <h3 class="text-3xl md:text-4xl font-extrabold text-white mb-8">
+                    Qual o principal objetivo que deseja alcançar com a V4 Company?
+                </h3>
+                <div class="h-px w-full bg-gradient-to-r from-transparent via-brand-secondary/50 to-transparent my-8"></div>
+                <p class="text-lg md:text-2xl text-gray-200 leading-relaxed font-light">
+                    Estabelecer uma comunicação que posicione a Dra Tatiane Totoli como referência na cobrança e a recuperação de dívidas de clientes inadimplentes para pequenos e médios negócios, implementando novos canais de aquisição e ferramentas de gestão a fim de reduzir a dependência de indicações para atingir a meta de R$ 500 mil de fat. até 2026.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-pattern-3" id="pesquisa">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">2ª semana - Pesquisa de Mercado & Posicionamento</h2>
+                <div class="h-1 w-24 bg-brand-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- Fact 1 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 1: Termo recuperação de crédito</h4>
+                            <p class="text-gray-400 mb-4 text-sm">O termo confunde empresários com tributário, podendo atrair leads desqualificados.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Substituir a oferta para "Recuperação de caixa", "Cobrança de inadimplentes" que encaixa melhor no senso comum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fact 2 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-solid fa-headset"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 2: Ineficiência no atendimento</h4>
+                            <p class="text-gray-400 mb-4 text-sm">Atendimento manual e lento no WhatsApp pode causar uma má primeira impressão e perder oportunidade de vendas que buscam agilidade na cobrança de recebíveis.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Implementar Kommo CRM com chatbot de pré-qualificação humanizado, reduzindo o tempo de resposta e filtrando leads antes da reunião.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fact 3 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-solid fa-window-restore"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 3: Ausência de página de destino</h4>
+                            <p class="text-gray-400 mb-4 text-sm">Sem site ou landing page, todo tráfego orgânico ou pago vaza sem conversão.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Criar landing page de alta conversão focada para PMEs com formulário de qualificação em 4 perguntas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fact 4 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-solid fa-money-bill-trend-up"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 4: Faturamento Recorrente</h4>
+                            <p class="text-gray-400 mb-4 text-sm">Vender serviço recorrente como forma de gerar previsibilidade de receita.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Executar a escada de serviços aplicando o Diagnóstico Empresarial 360°, para converter 15% dos clientes em contratos de assessoria jurídica mensal contínua.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fact 5 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-brands fa-instagram"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 5: Barreira de Acessibilidade</h4>
+                            <p class="text-gray-400 mb-4 text-sm">A comunicação do Instagram transmite exclusividade de luxo, podendo afastar pequenos e médios empresários de Goiás.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Reestruturar a bio, destaques e posts fixados focando em autoridade acessível.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fact 6 -->
+                <div class="bg-[#111] p-8 rounded-2xl border border-gray-800 hover:border-brand-secondary/50 transition-colors reveal">
+                    <div class="flex items-start gap-4">
+                        <div class="mt-1 bg-red-900/30 p-3 rounded-lg text-red-500"><i class="fa-solid fa-users"></i></div>
+                        <div>
+                            <h4 class="text-xl font-bold text-white mb-2">Fato 6: Dependência de Indicações</h4>
+                            <p class="text-gray-400 mb-4 text-sm">A dependência apenas de indicação pode impedir atingir a meta de R$ 500 mil mensais.</p>
+                            <div class="bg-brand-primary/50 border border-brand-secondary/20 p-4 rounded-xl">
+                                <h5 class="text-brand-secondary font-bold text-xs uppercase mb-1"><i class="fa-solid fa-bolt mr-2"></i>Plano de Ação</h5>
+                                <p class="text-gray-200 text-sm">Estruturar campanhas de Google Ads direcionadas para termos de intenção e geração de conteúdos orgânicos para ajudar na distribuição de audiência.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 reveal">
+                <a href="https://drive.google.com/drive/folders/1C2whTXHI4RoqRfcR5apOEcX-WlG_HniL" target="_blank" class="btn-gold inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-bold text-lg shadow-lg">
+                    <i class="fa-brands fa-google-drive"></i> Clique para acessar o material
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-pattern-4" id="diagnostico">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">3ª semana - Diagnóstico Marketing / Comercial</h2>
+                <div class="h-1 w-24 bg-brand-secondary mx-auto rounded-full"></div>
+            </div>
+
+            <div class="space-y-4 mb-12 reveal">
+                <!-- Action Plans List -->
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Google Ads</h4>
+                        <p class="text-gray-300">Investir em campanhas de Google Ads focando no termo "escritório de cobrança", que possui 480 buscas mensais, capturando empresários em Goiás.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Landing Page</h4>
+                        <p class="text-gray-300">Criar uma landing page com VSL e formulário de qualificação em 4 perguntas para filtrar.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Automação de Atendimento</h4>
+                        <p class="text-gray-300">Implementar o Kommo CRM com chatbot de pré-atendimento para responder leads em 5 segundos via WhatsApp, reduzindo o tempo de resposta.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Capacitação Comercial</h4>
+                        <p class="text-gray-300">Capacitar a assistente comercial Silvanya em Inside Sales para realizar triagem dos Leads.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Reposicionamento Social</h4>
+                        <p class="text-gray-300">Reestruturar o posicionamento do Instagram com conteúdos educativos, teses, ganchos diferentes para gerar autoridade com acessibilidade.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Expansão de Nichos</h4>
+                        <p class="text-gray-300">Replicar a estratégia de cobrança nos submercados de formaturas, escolas privadas e clínicas odontológicas em Goiás.</p>
+                    </div>
+                </div>
+
+                <div class="bg-[#1D0002] border-l-4 border-brand-secondary p-6 rounded-r-xl shadow-md flex items-start gap-4 hover:bg-[#2a0003] transition-colors">
+                    <i class="fa-solid fa-circle-check text-brand-secondary text-2xl mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg text-white mb-1">Escada de Serviços</h4>
+                        <p class="text-gray-300">Executar a escada de serviços vendendo o Diagnóstico Empresarial 360° pós-êxito para converter 15% dos clientes em contratos mensais recorrentes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-12 reveal">
+                <a href="https://drive.google.com/drive/folders/1lmJ8t_rYKOSBnxbauKEXonGJmUK7GYhD" target="_blank" class="btn-gold inline-flex items-center gap-3 px-8 py-4 rounded-full text-white font-bold text-lg shadow-lg">
+                    <i class="fa-brands fa-google-drive"></i> Clique para acessar o material
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-pattern-1" id="artefatos">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Artefatos para execução</h2>
+                <p class="text-gray-400">Documentação completa desenvolvida para a implementação da estratégia.</p>
+                <div class="h-1 w-24 bg-brand-secondary mx-auto rounded-full mt-4"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+                
+                <!-- Artifact 1 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/p46Cvgd.jpg" alt="Manual de Identidade Visual" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-4 flex-grow">Manual de Identidade Visual</h3>
+                        <a href="https://drive.google.com/file/d/1neAB8dYrAXlkQTdPQJKD1U12DLwaNgHm/view" target="_blank" class="btn-gold w-full text-center py-3 rounded-lg font-semibold mt-auto inline-block">
+                            Clique para acessar o material
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Artifact 2 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/hodWUNj.jpg" alt="Criativos para anúncio" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-4 flex-grow">Criativos para anúncio</h3>
+                        <a href="https://drive.google.com/drive/folders/1cG6t0sFsOrgH0DLs03QsuPmCaglcjjhk" target="_blank" class="btn-gold w-full text-center py-3 rounded-lg font-semibold mt-auto inline-block">
+                            Clique para acessar o material
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Artifact 3 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/DWNFqie.jpg" alt="Landing Page" class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-4 flex-grow">Landing Page</h3>
+                        <a href="https://orssoluan.github.io/tatianatotoli/" target="_blank" class="btn-gold w-full text-center py-3 rounded-lg font-semibold mt-auto inline-block">
+                            Clique para acessar o material
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Artifact 4 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/qjQD15z.jpg" alt="Roteiro" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow justify-center items-center">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-2">Roteiro</h3>
+                        <p class="text-gray-500 text-sm">(Preview Visual)</p>
+                    </div>
+                </div>
+
+                <!-- Artifact 5 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/7BmJfB2.jpg" alt="Playbook Comercial" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-4 flex-grow">Playbook Comercial</h3>
+                        <a href="https://drive.google.com/file/d/1QAZrZ5g9GLivPWwvSI87hBF-L178UrYx/view" target="_blank" class="btn-gold w-full text-center py-3 rounded-lg font-semibold mt-auto inline-block">
+                            Clique para acessar o material
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Artifact 6 -->
+                <div class="bg-[#111] rounded-2xl overflow-hidden border border-gray-800 shadow-xl flex flex-col group hover:-translate-y-2 transition-transform duration-300">
+                    <div class="h-48 overflow-hidden relative">
+                        <div class="absolute inset-0 bg-brand-primary/30 group-hover:bg-transparent transition-colors z-10"></div>
+                        <img src="https://imgur.com/yZopbi4.jpg" alt="Roteiro de conteúdos" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-brand-secondary mb-4 flex-grow">Roteiro de conteúdos</h3>
+                        <a href="https://orssoluan.github.io/roteirotatianatotoli/" target="_blank" class="btn-gold w-full text-center py-3 rounded-lg font-semibold mt-auto inline-block">
+                            Clique para acessar o material
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-pattern-2" id="calendario">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Calendário Estratégico para os próximos 6 meses</h2>
+                <div class="h-1 w-24 bg-brand-secondary mx-auto rounded-full"></div>
+            </div>
+            
+            <!-- Gantt Chart Container -->
+            <div class="reveal">
+                <div class="gantt-container">
+                    <div class="gantt-chart">
+                        <div class="gantt-header topic">Ação / Tópico</div>
+                        <div class="gantt-header">Setembro<br><small>2026</small></div>
+                        <div class="gantt-header">Outubro<br><small>2026</small></div>
+                        <div class="gantt-header">Novembro<br><small>2026</small></div>
+                        <div class="gantt-header">Dezembro<br><small>2026</small></div>
+                        <div class="gantt-header">Janeiro<br><small>2027</small></div>
+                        <div class="gantt-header">Fevereiro<br><small>2027</small></div>
+
+                        <!-- Row 1 -->
+                        <div class="gantt-cell topic-cell">Ajustar posicionamento Instagram</div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Ajustar posicionamento Instagram', 'Recomendo a atuação de Social Media em setembro para alinhar o posicionamento da Dra. Tatiana Totoli à recuperação de recebíveis de PMEs. A execução será feita através de revisão da biografia, mensagens centrais, dúvidas frequentes e roteiros de conteúdos fixados. Os materiais deverão explicar atuação e perfil atendido, sem promessas de recuperação, passando por revisão ética antes da publicação e servindo de referência para anúncios e página.', 'Setembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 2 -->
+                        <div class="gantt-cell topic-cell">Publicar Landing Page</div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Publicar Landing Page', 'Recomendo a atuação integrada de Copywriting, Design, desenvolvimento e Rastreamento em outubro para criar uma página de captação voltada às empresas credoras. A execução será feita através de texto informativo, apresentação da atuação, formulário com dados mínimos necessários e integração ao CRM. Serão configurados os eventos pertinentes, conforme o plano de mensuração. A entrega deverá passar por testes em dispositivos móveis, revisão de privacidade e validação ética da comunicação.', 'Setembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 3 -->
+                        <div class="gantt-cell topic-cell">Implementar novo processo comercial</div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Implementar novo processo comercial', 'Recomendo a estruturação do processo comercial em setembro para reduzir perdas no atendimento e definir o que caracteriza uma oportunidade qualificada. A execução será feita através de desenho das etapas do funil, critérios de passagem, motivos de perda, responsáveis e scripts de atendimento. O entregável será um playbook aprovado, com prazo de resposta compatível com a equipe e distinção entre contato recebido, lead qualificado, reunião realizada e contrato.', 'Setembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 4 -->
+                        <div class="gantt-cell topic-cell">Configurações iniciais de tráfego</div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Configurações iniciais de tráfego', 'Recomendo a atuação do gestor de tráfego, com apoio técnico, em setembro para organizar acessos e definir a mensuração antes das campanhas. A execução será feita através de auditoria dos ativos existentes, permissões mínimas necessárias, mapa de eventos, convenção de UTMs e especificação dos campos de origem no CRM. O entregável será um plano de implementação que diferencie cliques, contatos e oportunidades, com tratamento de dados sujeito à revisão responsável.', 'Setembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 5 -->
+                        <div class="gantt-cell topic-cell">Implementar CRM Vendas</div>
+                        <div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Implementar CRM Vendas', 'Recomendo implementar ou adequar o Kommo CRM em outubro, conforme os recursos existentes, para centralizar contatos e controlar o avanço comercial. A execução será feita através de configuração do pipeline aprovado, campos de qualificação, captura de origem, distribuição de responsáveis e tarefas de acompanhamento. A automação inicial deverá oferecer encaminhamento humano. A entrega será validada com contatos de teste, verificando registros, notificações e continuidade do atendimento.', 'Outubro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 6 -->
+                        <div class="gantt-cell topic-cell">Produzir Pack Criativo</div>
+                        <div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Produzir Pack Criativo', 'Recomendo a produção de Pack de Criativos de Ads e Copywriting em outubro para preparar os materiais antes da ativação das campanhas. A execução será feita através de briefing conduzido pelo gestor de tráfego, desenvolvimento de conceitos visuais, roteiros e variações de títulos, descrições e chamadas. Designer e copywriter produzirão as peças conforme os formatos necessários. O entregável será uma matriz de testes aprovada, sem alegações de resultados não comprovados.', 'Outubro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 7 -->
+                        <div class="gantt-cell topic-cell">Ativar campanhas</div>
+                        <div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Ativar campanhas', 'Recomendo a execução do Roadmap de tráfego, condicionada à validação dos ativos e à disponibilidade de atendimento.', 'Outubro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 8 -->
+                        <div class="gantt-cell topic-cell">Integrar conversões comerciais</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Integrar conversões comerciais', 'Recomendo integrar CRM e mensuração de mídia em dezembro para aproximar a otimização dos resultados comerciais efetivos. A execução será feita através de associação entre origem dos contatos, reuniões realizadas e contratos, utilizando identificadores permitidos e importações ou integrações tecnicamente disponíveis. Conversões aprimoradas ou APIs serão avaliadas conforme elegibilidade, políticas e privacidade. A entrega será a conciliação dos registros, com distinção entre eventos recebidos, correspondidos e efetivamente atribuídos às campanhas.', 'Dezembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 9 -->
+                        <div class="gantt-cell topic-cell">Renovar criativos publicitários</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Renovar criativos publicitários', 'Recomendo a continuidade de Design e Copywriting em dezembro para renovar o Pack de Criativos a partir dos primeiros aprendizados. A execução será feita através de análise conjunta de anúncios, qualidade dos leads e objeções registradas pelo atendimento, seguida de novas peças e textos com hipóteses identificáveis. Conteúdos educativos poderão abastecer anúncios e perfil orgânico. A verificação considerará oportunidades geradas, evitando escolher materiais apenas por cliques ou engajamento.', 'Dezembro 2026')"></div></div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div>
+
+                        <!-- Row 10 -->
+                        <div class="gantt-cell topic-cell">Testar Landing Pages por nicho</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Testar Landing Pages por nicho', 'Recomendo testar campanhas por segmento em janeiro somente se os dados anteriores sustentarem essa expansão. A execução será feita através de mensagens e páginas coerentes com hipóteses de nichos, como escolas, clínicas ou empresas de formaturas, quando alinhados ao público prioritário. A seleção de públicos respeitará os recursos disponíveis nas plataformas. A verba será controlada, e a continuidade dependerá de oportunidades qualificadas, contratos e capacidade de atendimento, não apenas de leads baratos.', 'Janeiro 2027')"></div></div>
+                        <div class="gantt-cell"></div>
+
+                        <!-- Row 11 -->
+                        <div class="gantt-cell topic-cell">Implementar réguas relacionamento</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Implementar réguas relacionamento', 'Recomendo implementar ou aprimorar Réguas de Relacionamento em janeiro, aproveitando o CRM existente, para acompanhar oportunidades sem retorno e reduzir faltas em reuniões. A execução será feita através de segmentação por etapa, mensagens informativas, lembretes e tarefas de contato humano. Frequência, interrupção após resposta e opção de não receber mensagens deverão ser configuradas. A verificação acompanhará respostas, comparecimento e reativação, respeitando privacidade e revisão ética, sem contratação duplicada de chatbot.', 'Janeiro 2027')"></div></div>
+                        <div class="gantt-cell"></div>
+
+                        <!-- Row 12 -->
+                        <div class="gantt-cell topic-cell">Avaliar expansão serviços</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Avaliar expansão serviços', 'Recomendo a utilização de consultoria estratégica em fevereiro para avaliar serviços complementares compatíveis com necessidades efetivamente identificadas nos clientes. A execução será feita através de análise da base atendida, entrevistas de satisfação e revisão da capacidade técnica do escritório. Eventuais ofertas de assessoria deverão ter escopo, elegibilidade e abordagem aprovados, sem venda automática após êxito em cobrança. A entrega será uma proposta de expansão fundamentada, sem presumir recorrência ou conversão garantidas.', 'Fevereiro 2027')"></div></div>
+
+                        <!-- Row 13 -->
+                        <div class="gantt-cell topic-cell">Planejar próximo ciclo</div>
+                        <div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div><div class="gantt-cell"></div>
+                        <div class="gantt-cell"><div class="gantt-bar" onclick="openModal('Planejar próximo ciclo', 'Recomendo a revisão estratégica em fevereiro para dimensionar o próximo ciclo com base no funil observado e na capacidade do escritório. A execução será feita através de consolidação de investimento, oportunidades, contratos, receita atribuível e custos disponíveis, distinguindo honorários do escritório dos valores recuperados para clientes. A meta financeira deverá ser confirmada antes das projeções. A entrega será um plano de continuidade com cenários explícitos, prioridades e condições para eventual aumento de investimento.', 'Fevereiro 2027')"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Gantt Chart -->
+    <div class="modal-overlay" id="actionModal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="forceCloseModal()">&times;</span>
+            <h2 class="modal-title" id="modalTitle">Título da Ação</h2>
+            <div class="modal-desc" id="modalDesc">Descrição da ação...</div>
+            <div class="modal-meta" id="modalMeta">Período: </div>
+        </div>
+    </div>
+
+    <section class="py-32 bg-[#050505] relative overflow-hidden flex items-center justify-center text-center">
+        <!-- Abstract shape -->
+        <div class="absolute w-96 h-96 bg-brand-secondary/5 rounded-full blur-3xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <h2 class="text-4xl md:text-6xl font-black text-white relative z-10 uppercase tracking-wide reveal">
+            Obrigado por<br>
+            <span class="text-brand-secondary">abrir as portas para a V4 Company</span>
+        </h2>
+    </section>
+
+    <footer class="bg-brand-footer py-6 text-center shadow-inner">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+            <span class="text-white font-semibold tracking-widest text-sm uppercase">Produzido por:</span>
+            <img src="https://imgur.com/SU08Zb0.png" alt="V4 Silva Anchieta & Co Logo" class="h-10 object-contain drop-shadow-md bg-white p-2 rounded-lg" onerror="this.src='https://imgur.com/SU08Zb0.jpg'; this.onerror=null;">
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================
+           1. HERO CANVAS ANIMATION SCRIPT 
+           ========================================= */
+        const coresDasBolinhas = ['#CD9444']; 
+        const corDasLinhas = '#CD9444'; 
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+        
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 3 + 1;
+                this.color = coresDasBolinhas[Math.floor(Math.random() * coresDasBolinhas.length)];
+                this.alpha = Math.random() * 0.5 + 0.1;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.alpha;
+                ctx.fill();
+            }
+        }
+        
+        function initCanvas() {
+            particles = [];
+            const particleCount = width > 768 ? 150 : 60; 
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                
+                for (let j = index + 1; j < particles.length; j++) {
+                    const p2 = particles[j];
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = corDasLinhas;
+                        ctx.globalAlpha = 1 - (distance / 150);
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
+                }
+            });
+            requestAnimationFrame(animateCanvas);
+        }
+
+        /* =========================================
+           2. GANTT CHART MODAL SCRIPT
+           ========================================= */
+        const modal = document.getElementById('actionModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const modalMeta = document.getElementById('modalMeta');
+
+        function openModal(title, description, period) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = description;
+            modalMeta.textContent = 'Período estimado: ' + period;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeModal(event) {
+            if (event.target === modal) {
+                forceCloseModal();
+            }
+        }
+
+        function forceCloseModal() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                forceCloseModal();
+            }
+        });
+
+        /* =========================================
+           3. SCROLL REVEAL ANIMATION
+           ========================================= */
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+
+        /* =========================================
+           4. ON LOAD INITIALIZATION
+           ========================================= */
+        window.onload = function() {
+            resizeCanvas();
+            initCanvas();
+            animateCanvas();
+            reveal(); // Trigger reveal for elements already in viewport
+        };
+        
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initCanvas();
+        });
+    </script>
+</body>
+</html>
