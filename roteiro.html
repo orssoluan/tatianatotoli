@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playbook de Conteúdo - Dra. Tatiana Totoli</title>
+    
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1D0002',   /* Tom escuro e elegante */
+                        secondary: '#CD9444', /* Dourado sofisticado */
+                        tertiary: '#FFFFFF',  /* Branco */
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Configurações essenciais para impressão em A4 */
+        :root {
+            --page-width: 210mm;
+            --page-height: 297mm;
+        }
+
+        body {
+            background-color: #f3f4f6; /* Fundo cinza na tela para destacar as folhas */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .a4-page {
+            width: var(--page-width);
+            min-height: var(--page-height);
+            background: white;
+            margin: 20px auto;
+            padding: 25mm 20mm; /* Margens internas da folha */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative;
+            box-sizing: border-box;
+            page-break-after: always;
+            overflow: hidden;
+        }
+
+        /* Elementos decorativos padrão para as páginas internas */
+        .page-header {
+            position: absolute;
+            top: 10mm;
+            left: 20mm;
+            right: 20mm;
+            border-bottom: 1px solid #CD9444;
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: #1D0002;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: right;
+            font-size: 10px;
+            color: #CD9444;
+            font-weight: 600;
+        }
+
+        /* Remover bordas e sombras na hora de imprimir */
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            body { background: white; margin: 0; padding: 0; }
+            .a4-page { margin: 0; box-shadow: none; border: none; }
+            .no-print { display: none; }
+        }
+
+        /* Estilos dos blocos de conteúdo */
+        .script-block {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800 font-sans py-8 print:py-0">
+
+    <!-- PÁGINA 1: CAPA -->
+    <div class="a4-page flex flex-col items-center justify-center text-center">
+        <!-- Decoração de borda superior e inferior -->
+        <div class="absolute top-0 left-0 w-full h-4 bg-primary"></div>
+        <div class="absolute top-4 left-0 w-full h-1 bg-secondary"></div>
+        
+        <div class="flex flex-col items-center justify-center flex-grow w-full">
+            <img src="https://i.imgur.com/ds27Ecy.png" alt="Logotipo Dra. Tatiana Totoli" class="w-64 mb-16 object-contain">
+            
+            <h1 class="text-5xl font-bold text-primary mb-6 tracking-tight">ROTEIROS DE <br><span class="text-secondary">CONTEÚDO</span></h1>
+            
+            <div class="w-24 h-1 bg-secondary mx-auto mb-8"></div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-secondary"></div>
+        <div class="absolute bottom-1 left-0 w-full h-4 bg-primary"></div>
+    </div>
+
+    <!-- PÁGINA 2: MÉTODO -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Método para metrificar o resultado</span>
+        </div>
+
+        <div class="mt-12">
+            <h2 class="text-3xl font-bold text-primary mb-4 border-l-4 border-secondary pl-4">Método para metrificar o resultado</h2>
+            <p class="text-lg text-gray-600 mb-10 font-medium">Cada etapa tem um marco mensurável que você precisa atingir antes de passar para próxima etapa</p>
+
+            <div class="grid grid-cols-1 gap-8">
+                
+                <!-- Etapa 1 -->
+                <div class="bg-gray-50 rounded-lg p-6 border-t-4 border-primary shadow-sm relative">
+                    <div class="absolute -top-4 right-6 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Etapa 1</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Viral</h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed">Encontrar o primeiro vídeo que rompe a média histórica do seu perfil e o formato por trás dele. Nos casos que destravam, esse vídeo chega a performar até 10x acima da sua média.</p>
+                    <div class="bg-white border border-gray-200 px-4 py-3 rounded-md flex items-center">
+                        <span class="text-secondary mr-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </span>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase font-bold block">Marco Mensurável</span>
+                            <span class="text-primary font-semibold">Até 10x a média do perfil</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 2 -->
+                <div class="bg-gray-50 rounded-lg p-6 border-t-4 border-primary shadow-sm relative">
+                    <div class="absolute -top-4 right-6 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Etapa 2</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Audiência</h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed">O hook segura os 3 primeiros segundos e o alcance passa a atrair o público certo, não curiosos de passagem.</p>
+                    <div class="bg-white border border-gray-200 px-4 py-3 rounded-md flex items-center">
+                        <span class="text-secondary mr-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                        </span>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase font-bold block">Marco Mensurável</span>
+                            <span class="text-primary font-semibold">Taxa de pulados abaixo de 45%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 3 -->
+                <div class="bg-gray-50 rounded-lg p-6 border-t-4 border-primary shadow-sm relative">
+                    <div class="absolute -top-4 right-6 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Etapa 3</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Autoridade</h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed">Formato visual e editorial consistente transforma alcance em reconhecimento: pra você e, por transbordo, pra empresa.</p>
+                    <div class="bg-white border border-gray-200 px-4 py-3 rounded-md flex items-center">
+                        <span class="text-secondary mr-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                        </span>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase font-bold block">Marco Mensurável</span>
+                            <span class="text-primary font-semibold">Padrão consistente no perfil</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 4 -->
+                <div class="bg-gray-50 rounded-lg p-6 border-t-4 border-primary shadow-sm relative">
+                    <div class="absolute -top-4 right-6 bg-secondary text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Etapa 4</div>
+                    <h3 class="text-xl font-bold text-primary mb-2">Demanda</h3>
+                    <p class="text-gray-700 mb-4 leading-relaxed">A autoridade vira fluxo de oportunidades inbound, reduzindo mês a mês a dependência de mídia paga.</p>
+                    <div class="bg-white border border-gray-200 px-4 py-3 rounded-md flex items-center">
+                        <span class="text-secondary mr-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                        </span>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase font-bold block">Marco Mensurável</span>
+                            <span class="text-primary font-semibold">CAC decrescente</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 02</div>
+    </div>
+
+    <!-- PÁGINA 3: FORMATO 1 -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Roteiros de Conteúdo</span>
+        </div>
+
+        <div class="mt-12">
+            <div class="mb-8">
+                <span class="text-secondary font-bold tracking-wider text-sm uppercase">Formato 1</span>
+                <h2 class="text-3xl font-bold text-primary">Caixa</h2>
+            </div>
+
+            <!-- Roteiro 1.1 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 1.1</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"A venda aconteceu. O dinheiro ainda não entrou."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Quem vende parcelado conhece essa diferença. O serviço foi entregue, mas as parcelas atrasaram e os compromissos da empresa continuam.</p>
+                            <p>Antes de repetir a mesma cobrança, organize o que você tem: contrato, comprovante da entrega ou do serviço, vencimentos e histórico das conversas.</p>
+                            <p>Esses documentos ajudam a entender a situação e avaliar os caminhos possíveis.</p>
+                            <p>O primeiro passo não é prometer recebimento. É saber o que pode ser feito."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Salve este vídeo para organizar suas contas a receber."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roteiro 1.2 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 1.2</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Cobrar um cliente não precisa transformar a relação em uma briga."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Existe diferença entre cobrar com firmeza e constranger.</p>
+                            <p>Uma comunicação objetiva apresenta a pendência, mantém o respeito e registra o que foi conversado.</p>
+                            <p>Quando a cobrança fica espalhada entre mensagens, ligações e promessas sem registro, a situação pode ficar ainda mais difícil de acompanhar.</p>
+                            <p>Organizar esse processo ajuda a conduzir a conversa com clareza, embora não seja possível garantir como o cliente vai reagir."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Na sua empresa, os acordos ficam registrados ou acabam se perdendo nas conversas?"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 03</div>
+    </div>
+
+    <!-- PÁGINA 4: FORMATO 2 -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Roteiros de Conteúdo</span>
+        </div>
+
+        <div class="mt-12">
+            <div class="mb-8">
+                <span class="text-secondary font-bold tracking-wider text-sm uppercase">Formato 2</span>
+                <h2 class="text-3xl font-bold text-primary">Educação</h2>
+            </div>
+
+            <!-- Roteiro 2.1 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 2.1</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"O boleto mostra uma cobrança. Mas ele pode não contar a história inteira da dívida."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"O que foi vendido? O serviço foi prestado? Qual era o vencimento? Existe algum registro do acordo?</p>
+                            <p>Contrato, comprovantes e conversas podem ajudar a esclarecer essas perguntas.</p>
+                            <p>Não é seguro afirmar que qualquer boleto, sozinho, permite o mesmo caminho judicial.</p>
+                            <p>A documentação e as características da dívida precisam ser analisadas em conjunto."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Guarde os documentos da venda, não apenas o boleto vencido."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roteiro 2.2 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 2.2</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"A empresa não pagou. Isso permite cobrar automaticamente do sócio?"</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Não. A dívida da empresa não se transforma automaticamente em dívida pessoal do sócio.</p>
+                            <p>Existem situações em que essa responsabilidade pode ser discutida, mas isso depende dos fatos, dos requisitos legais e da análise judicial.</p>
+                            <p>A chamada desconsideração da personalidade jurídica não é um atalho para toda cobrança.</p>
+                            <p>Antes de anunciar uma medida, é preciso verificar se ela cabe naquele caso."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Desconfie de soluções que parecem servir para qualquer dívida."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 04</div>
+    </div>
+
+    <!-- PÁGINA 5: FORMATO 3 -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Roteiros de Conteúdo</span>
+        </div>
+
+        <div class="mt-12">
+            <div class="mb-8">
+                <span class="text-secondary font-bold tracking-wider text-sm uppercase">Formato 3</span>
+                <h2 class="text-3xl font-bold text-primary">Posicionamento</h2>
+            </div>
+
+            <!-- Roteiro 3.1 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 3.1</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 40–50 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Você não precisa entender de processo para receber uma explicação clara."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Eu sou Tatiana Totoli, advogada empresarial com atuação em cobrança de contas a receber.</p>
+                            <p>Minha história começa em Mauá, no ABC Paulista, e faz parte da maneira como escolho me comunicar: com respeito, clareza e sem criar distância.</p>
+                            <p>Quando um empresário procura orientação porque vendeu e não recebeu, ele precisa entender possibilidades, limites e próximos passos.</p>
+                            <p>Para mim, firmeza técnica e atendimento humano devem caminhar juntos."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"É sobre isso que você vai encontrar conteúdo neste perfil."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roteiro 3.2 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 3.2</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Vale a pena cobrar juridicamente? O valor da dívida, sozinho, não responde."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Também é preciso olhar os documentos, o tempo decorrido, a situação do devedor e os custos envolvidos.</p>
+                            <p>Honorários, possíveis despesas e condições do trabalho devem ser esclarecidos antes da contratação.</p>
+                            <p>Não é uma decisão que deveria nascer de uma promessa de dinheiro fácil.</p>
+                            <p>Uma análise responsável ajuda o empresário a entender possibilidades e limites antes de escolher como seguir."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Antes de decidir, peça clareza sobre o trabalho e suas condições."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 05</div>
+    </div>
+
+    <!-- PÁGINA 6: FORMATO 4 -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Roteiros de Conteúdo</span>
+        </div>
+
+        <div class="mt-12">
+            <div class="mb-8">
+                <span class="text-secondary font-bold tracking-wider text-sm uppercase">Formato 4</span>
+                <h2 class="text-3xl font-bold text-primary">Bastidores</h2>
+            </div>
+
+            <!-- Roteiro 4.1 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 4.1</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 35–45 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Quando um pagamento passa pelo escritório, o que precisa ficar claro?"</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"O contrato deve esclarecer como os recebimentos e repasses serão tratados.</p>
+                            <p>Na prestação de contas, o cliente precisa conseguir compreender o valor recebido, os descontos previstos e o valor a repassar.</p>
+                            <p>Comprovantes e registros ajudam a acompanhar cada movimentação.</p>
+                            <p>Antes de contratar, pergunte como esse processo funciona e por qual canal você receberá as informações."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Transparência começa com uma explicação que você consegue entender."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roteiro 4.2 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 4.2</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 40–50 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Antes de escolher o caminho da cobrança, eu preciso entender como a venda aconteceu."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Imagine uma empresa de formaturas com parcelas vencidas. Este é um exemplo hipotético.</p>
+                            <p>A análise começa pelo contrato, pelos vencimentos, pela prestação do serviço e pelo histórico de negociação.</p>
+                            <p>Também importa saber se existe alguma contestação sobre o que foi contratado.</p>
+                            <p>Só depois dessa leitura é possível discutir medidas adequadas.</p>
+                            <p>Ter uma lista de atrasos não significa que todas as dívidas devem receber o mesmo tratamento."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Organizar a carteira é diferente de tratar todos os atrasos como iguais."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 06</div>
+    </div>
+
+    <!-- PÁGINA 7: FORMATO 5 -->
+    <div class="a4-page">
+        <div class="page-header">
+            <span>Dra. Tatiana Totoli</span>
+            <span>Roteiros de Conteúdo</span>
+        </div>
+
+        <div class="mt-12">
+            <div class="mb-8">
+                <span class="text-secondary font-bold tracking-wider text-sm uppercase">Formato 5</span>
+                <h2 class="text-3xl font-bold text-primary">Conteúdo de Descoberta</h2>
+            </div>
+
+            <!-- Roteiro 5.1 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 5.1</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 40 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"Vai cobrar uma dívida? Organize estas três coisas."</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p><strong class="text-primary">Primeiro:</strong> o que foi combinado. Separe contrato, proposta aceita e condições de pagamento.</p>
+                            <p><strong class="text-primary">Segundo:</strong> o que foi entregue. Reúna os registros da entrega ou da prestação do serviço.</p>
+                            <p><strong class="text-primary">Terceiro:</strong> o histórico. Confira vencimentos, pagamentos parciais e negociações anteriores.</p>
+                            <p>Isso ajuda a entender a pendência e avaliar os caminhos possíveis. Cada caso exige análise."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Salve este checklist para a próxima revisão das contas a receber."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roteiro 5.2 -->
+            <div class="script-block mb-10 border border-gray-200 rounded-lg overflow-hidden">
+                <div class="bg-primary px-6 py-3 flex justify-between items-center">
+                    <h3 class="text-white font-semibold">Roteiro 5.2</h3>
+                    <span class="bg-white/20 text-white text-xs px-2 py-1 rounded">⏱ 40 segundos</span>
+                </div>
+                
+                <div class="p-6 bg-white space-y-6">
+                    <div>
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-2">Gancho</h4>
+                        <p class="text-xl font-medium text-primary italic border-l-2 border-secondary pl-4 py-1 leading-snug">"‘Já cobrei de todo jeito.’ Mas o que foi analisado?"</p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Desenvolvimento</h4>
+                        <div class="text-gray-700 leading-relaxed space-y-2">
+                            <p>"Mandar mensagens e fazer ligações registra tentativas. Não esclarece, sozinho, todas as possibilidades.</p>
+                            <p>É preciso conferir os documentos, o tempo decorrido e o histórico dessa dívida.</p>
+                            <p>Também importa entender se há contestação e quais medidas podem ser adequadas.</p>
+                            <p>Isso não garante recebimento. Ajuda a decidir com mais informação e menos suposição."</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded text-center">
+                        <h4 class="text-xs font-bold text-secondary uppercase tracking-wider mb-1">Fechamento</h4>
+                        <p class="font-medium text-primary">"Neste perfil, explico como olhar essas situações com mais clareza."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-footer">PÁGINA 07</div>
+    </div>
+
+    <!-- PÁGINA 8: CONTRA CAPA -->
+    <div class="a4-page flex flex-col items-center justify-center text-center bg-primary text-white border-none shadow-none print:bg-primary" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;">
+        <div class="absolute top-0 left-0 w-full h-2 bg-secondary"></div>
+        
+        <div class="flex flex-col items-center justify-center flex-grow w-full">
+            <div class="bg-white p-6 rounded-full mb-10 shadow-lg">
+                 <img src="https://i.imgur.com/ds27Ecy.png" alt="Logotipo Dra. Tatiana Totoli" class="w-40 object-contain">
+            </div>
+           
+            <h2 class="text-2xl font-bold mb-4">Dra. Tatiana Totoli</h2>
+            <p class="text-secondary text-lg mb-8 uppercase tracking-widest font-medium">Advocacia Empresarial</p>
+
+            <div class="w-16 h-1 bg-secondary mx-auto mb-8"></div>
+            
+        </div>
+
+        <div class="absolute bottom-0 left-0 w-full h-2 bg-secondary"></div>
+    </div>
+
+</body>
+</html>
